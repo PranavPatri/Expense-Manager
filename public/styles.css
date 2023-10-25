@@ -1,0 +1,9 @@
+
+#expense-not-involved-member h6 {
+    text-decoration: line-through;
+    text-decoration-color: black;
+}
+
+#expense-not-involved-member {
+    margin-top: 10px;
+}

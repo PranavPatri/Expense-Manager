@@ -1,0 +1,40 @@
+#parent {
+    border-radius: 6%;
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    margin: 30px auto;
+    text-align: left;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.3);
+    opacity: 0.9;
+}
+
+.form-container {
+    width: 100%;
+    padding: 20px;
+}
+
+.form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid rgb(24, 49, 83);
+    margin-bottom: 15px;
+}
+
+.form-signin .btn-warning {
+    border: 2px solid rgb(24, 49, 83);
+    border-bottom: 7px solid rgb(24, 49, 83);
+}
+
+.error-message {
+    color: red;
+}
+
+#parent p {
+    margin: 0;
+    padding: 0;
+    color: rgb(24, 49, 83);
+}

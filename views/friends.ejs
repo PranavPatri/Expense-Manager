@@ -1,0 +1,380 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends | Expense Manager</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style='background-color: #E4E9FD'>
+    <div style="margin: 30px auto; width: 400px; height: 400px; background-color: white;">
+        <div style="width: 100%; height: 100px;">
+            <h2>Friends List</h2>
+            <form action="/friends" method="post">
+                <input type="text" name="friend" placeholder="Friends" required> <br>
+                <% if(!userExists) { %>
+                    <small style="visibility: visible;">User does not exist</small> <br>
+                <% } else { %>
+                    <small>User does not exist</small> <br>
+                <% } %>
+                <input type="submit" value="+ADD"> <br>
+            </form>
+        </div>
+        <div style="width: 100%; height: 300px;">
+            <% if(userExists) { %>
+                <% if(!zeroLength) { %>
+                    <% friends.forEach(function(friend) { %>
+                        <p> <%= friend.friend %> </p> <br>
+                    <% }) %>
+                <% } else { %>
+                    <strong><p>No Friends Found!</p></strong>
+                <% } %>
+            <% } %>
+             
+        </div>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends | Expense Manager</title>
+    
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/a9375f4385.js" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap cdn -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        body {
+            background: #eee;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .navbar-nav .nav-item {
+            margin: 1px 10px;
+            padding: 3px 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .navbar-nav .nav-item:hover {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        
+        .navbar-nav .nav-item:hover .nav-link {
+            color: rgb(20, 110, 190);
+        }
+
+        .navbar-brand img {
+            width: 38px;
+            height: 38px;
+        }
+
+        .user-icon-wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgb(24, 49, 83);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgb(24, 49, 83);
+            transition: color 0.3s, background-color 0.3s;
+            text-decoration: none; 
+        }
+        
+        .tooltip-text {
+            visibility: hidden;
+            background-color: rgb(20, 110, 190);
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            top: 125%; /* Position the tooltip above the icon */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .user-icon-wrapper:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .user-icon-wrapper:hover {
+            color: rgb(20, 110, 190);
+            background-color: rgba(240, 240, 240, 0.9);
+        }
+
+        .user-icon-wrapper i {
+            display: block;
+        }
+
+        #side_nav {
+            border-right: 2px solid rgb(24, 49, 83);
+            background: #e599f7;
+            min-width: 250px;
+            max-width: 250px;
+            transition: all 0.3s;
+            height: 90vh;
+            margin-top: 0;
+            padding-top: 25px;
+        }
+        
+        .sidebar ul.list-unstyled li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .sign-out {
+            border-top: 2px solid rgb(24, 49, 83);
+        }
+        
+        .sidebar li.active {
+            background: #9c36b5;
+            border-radius: 8px;
+            border: 2px solid rgb(24, 49, 83);
+            border-bottom: 5px solid rgb(24, 49, 83);
+        }
+        
+        .sidebar li.active a,
+        .sidebar li.active a:hover {
+            color: #fff;
+        }
+        
+        .sidebar li a {
+            color: rgb(24, 49, 83);
+            padding: 15px 20px;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .sidebar li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar li {
+            transition: background-color 0.3s;
+            margin: 25px 4px 18px 4px;
+            padding: 4px 0;
+        }
+
+        .sidebar li:hover {
+            background-color: #9c36b5;
+            border-radius: 8px;
+        }
+
+        .sidebar li:hover a {
+            color: #fff;
+        }
+
+        /* CSS for friend-container */
+        .friend-container {
+            width: 100%;
+            background: #fff;
+            padding: 35px;
+            border: 2px solid rgb(24, 49, 83);
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 15px;
+        }
+
+        /* CSS for input field inside friend-container */
+        .friend-container .form-control {
+            border: 2px solid rgb(24, 49, 83);
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* CSS for submit button inside friend-container */
+        .friend-container .btn {
+            background-color: #63e6be;
+            color: rgb(24, 49, 83);
+            border: 2px solid rgb(24, 49, 83);
+            border-bottom: 7px solid rgb(24, 49, 83);
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* CSS for error message */
+        .error-message {
+            padding: 0 20px;
+            color: red;
+        }
+
+        .input-group.error-border .form-control {
+            border: 2px solid red !important;
+        }
+
+        /* CSS for hover effect on buttons inside friend-container */
+        .friend-container .btn:hover {
+            background-color: #0ca678;
+        }
+
+        /* CSS for active state on buttons inside friend-container */
+        .friend-container .btn:active {
+            background-color: rgb(24, 49, 83);
+            color: #63e6be;
+            border-color: rgb(24, 49, 83);
+            border: 2px solid rgb(24, 49, 83);
+        }
+
+        button i {
+            margin-right: 6px;
+        }
+
+        .row {
+            padding: 20px 20px 0 20px;
+        }
+
+        .custom-list-item {
+            max-width: 570px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-left: 30px;
+        }
+
+        /* CSS to reverse colors for list-group-item-action */
+        .list-group-item-action {
+            background-color: rgb(245, 245, 245);
+            color: rgb(24, 49, 83);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .list-group-item-action:hover {
+            background-color: white;
+        }
+
+        .owe {
+            color: red;
+        }
+
+        .owed {
+            color: #059e28;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Bootstrap Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand" href="">
+                <img src="logo.png" alt="Logo">
+            </a>
+            <!-- Navigation Links -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
+            </ul>
+
+            <!-- User Profile -->
+            <form class="d-flex">
+                <div>
+                    <a href="" class="user-icon-wrapper">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="tooltip-text"> <%= user %> </span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <div class="main-container d-flex">
+        <div class="sidebar" id="side_nav">
+            <ul class="list-unstyled px-2">
+                <li class="active">
+                    <a href="/friends" class="text-decoration-none px-3 py-2 d-block">
+                        <i class="fa-solid fa-user"></i>Friends
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/groups" class="text-decoration-none px-3 py-2 d-block">
+                        <i class="fa-solid fa-users"></i>Groups
+                    </a>
+                </li>
+                <li class="" style="margin-bottom: 50px;">
+                    <a href="#" class="text-decoration-none px-3 py-2 d-block d-flex justify-content-between">
+                        <span><i class="fa-solid fa-clock-rotate-left"></i>Activity</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="sign-out list-unstyled px-2">
+                <li class="" style="margin-top: 20px;">
+                    <a href="/" class="text-decoration-none px-3 py-2 d-block">
+                        Sign Out<i style="margin-left: 10px;" class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="friend-container">
+            <h2>Friends List</h2>
+            <form class="form-signin" action="/friends" method="post">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="input-group mb-3 <%= !userExists ? 'error-border' : '' %>">
+                            <input type="text" name="friend" class="form-control" placeholder="Friend name" required>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn" type="submit"><i class="fa-solid fa-plus"></i>ADD Friend</button>
+                    </div>
+                </div>
+                <% if(!userExists) { %>
+                    <small class="error-message">User does not exist</small> <br>
+                <% } %>
+            </form>
+            <div class="friends-list mt-5">
+                <% if(!zeroLength) { %>
+                    <% friends.forEach(function(friend) { %>
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-action custom-list-item d-flex align-items-center">
+                                <div class="row" style="width: 650px; padding-top: 0; height: 4vh;">
+                                    <div class="col-8">
+                                        <h6 style="margin-bottom: 0;"> <%= friend.friend %> </h6>
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-end">
+                                        <% if(friend.payable < 0) { %>
+                                            <p class="owe"> You owe: ₹<%= Math.round((-friend.payable + Number.EPSILON) * 100) / 100 %> </p>
+                                        <% } else { %>
+                                            <p class="owed"> Owes you: ₹<%= Math.round((friend.payable + Number.EPSILON) * 100) / 100 %> </p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    <% }) %>
+                <% } else { %>
+                    <div class="text-center my-5">
+                        <strong><p><i class="fa-solid fa-magnifying-glass"></i>   No Friends Found!</p></strong>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
