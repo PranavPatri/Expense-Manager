@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-pranav:Test123@cluster0.yxvrl6g.mongodb.net/?retryWrites=true&w=majority/projectDB");
+mongoose.connect("mongodb+srv://admin-pranav:Test123@cluster0.yxvrl6g.mongodb.net/projectDB");
 
 const userSchema = {
     username: String,
